@@ -1,0 +1,18 @@
+<article class="video-game-card" [class.video-game-card--selected]="isSelected">
+  <header class="video-game-card__header">
+    <app-video-game-tag
+      [category]="videoGame.category"
+      [isFeatured]="videoGame.isFeatured ?? false"
+    />
+    <time class="video-game-card__date" [attr.datetime]="videoGame.releaseDate">
+      {{ videoGame.releaseDate | date: 'dd/MM/yyyy' }}
+    </time>
+  </header>
+  <h3 class="video-game-card__title">{{ videoGame.title }}</h3>
+  <p class="video-game-card__description">{{ videoGame.description }}</p>
+  <p class="video-game-card__platform">Plataforma: {{ videoGame.platform }}</p>
+  <p class="video-game-card__rating">Valoració: {{ videoGame.rating | number: '1.1-1' }} / 5</p>
+  <button class="video-game-card__button" type="button" (click)="onSelectVideoGame()">
+    Veure detall
+  </button>
+</article>

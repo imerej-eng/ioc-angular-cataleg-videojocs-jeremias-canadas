@@ -1,0 +1,11 @@
+<ul class="video-game-list">
+  @for (videoGame of videoGames; track videoGame.id) {
+    <li class="video-game-list__item">
+      <app-video-game-card
+        [videoGame]="videoGame"
+        [isSelected]="videoGame.id === selectedVideoGameId"
+        (selected)="onSelectVideoGame($event)"
+      />
+    </li>
+  }
+</ul>

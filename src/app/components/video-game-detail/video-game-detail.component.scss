@@ -1,0 +1,37 @@
+.video-game-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  &__title {
+    margin: 0;
+    font-size: 1.3rem;
+  }
+
+  &__description {
+    margin: 0;
+    color: #4b5563;
+  }
+
+  &__data {
+    margin: 0;
+  }
+
+  &__term {
+    font-weight: bold;
+  }
+
+  &__value {
+    margin: 0 0 0.5rem;
+  }
+
+  &__button {
+    align-self: flex-start;
+    padding: 0.4rem 0.8rem;
+    border: 2px solid #1d4ed8;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #1d4ed8;
+    cursor: pointer;
+  }
+}

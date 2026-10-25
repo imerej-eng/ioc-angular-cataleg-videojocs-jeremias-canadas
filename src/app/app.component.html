@@ -1,39 +1,48 @@
-<main class="main">
-  <div class="content">
-    <h1 class="title">{{ appName }}</h1>
-    <p class="description">
+<div class="app">
+  <a class="app__skip-link" href="#main-content">Salta al contingut principal</a>
+
+  <header class="app__header">
+    <h1 class="app__title">{{ appName }}</h1>
+    <p class="app__description">
       Jeremias Cañadas Oliva. Aplicació per consultar i gestionar un catàleg de videojocs.
     </p>
+  </header>
 
-    <div class="blocks">
-      <div class="card">
-        <div class="card-header">
-          <h2 class="card-title">Dades bàsiques del projecte a la branca ra1-setup</h2>
-        </div>
-        <div class="card-content">
-          <span class="card-content-label">Nom projecte:</span>
-          ioc-angular-cataleg-videojocs-jeremias-canadas
-        </div>
-        <div class="card-content">
-          <span class="card-content-label">Tecnologies:</span> Angular, TypeScript, HTML, SCSS
-        </div>
-        <div class="card-content">
-          <span class="card-content-label">Versió d'Angular:</span> 22.2.0
-        </div>
-        <div class="card-content"><span class="card-content-label">Node.js:</span> 24.21.0</div>
-        <div class="card-content">
-          <span class="card-content-label">Autor:</span> Jeremias Cañadas Oliva
-        </div>
-      </div>
+  <main class="app__main" id="main-content">
+    <app-video-game-filters
+      class="app__filters"
+      (filtersApplied)="onApplyVideoGameFilters($event)"
+      (filtersReset)="onResetVideoGameFilters()"
+    />
 
-      <aside class="aside-info">
-        <p><strong>Nota:</strong></p>
-        <p>Aquesta és la versió inicial del projecte, preparada a la branca ra1-setup.</p>
-      </aside>
-    </div>
+    <section class="app__results">
+      <h2 class="app__results-title">Videojocs</h2>
+      <p class="app__counter" role="status">
+        {{ filteredVideoGames.length }} de {{ videoGames.length }} videojocs
+      </p>
+      @if (hasFilteredVideoGames) {
+        <app-video-game-list
+          [videoGames]="filteredVideoGames"
+          [selectedVideoGameId]="selectedVideoGame?.id"
+          (selected)="onSelectVideoGame($event)"
+        />
+      } @else {
+        <p class="app__no-results">No s'ha trobat cap videojoc amb aquests filtres.</p>
+      }
+    </section>
 
-    <p class="status">Projecte base llest</p>
-  </div>
-</main>
+    <aside class="app__detail" aria-live="polite">
+      <h2 class="app__detail-title">Detall</h2>
+      @if (selectedVideoGame) {
+        <app-video-game-detail
+          [videoGame]="selectedVideoGame"
+          (closed)="onCloseVideoGameDetail()"
+        />
+      } @else {
+        <p class="app__detail-empty">Selecciona un videojoc per veure'n el detall.</p>
+      }
+    </aside>
+  </main>
+</div>
 
 <router-outlet />

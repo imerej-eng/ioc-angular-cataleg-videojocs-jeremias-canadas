@@ -1,0 +1,72 @@
+<form
+  class="video-game-filters"
+  #filterForm="ngForm"
+  (ngSubmit)="onApplyVideoGameFilters(filterForm)"
+>
+  <div class="video-game-filters__field">
+    <label class="video-game-filters__label" for="video-game-filters-search-text">
+      Text de cerca
+    </label>
+    <input
+      class="video-game-filters__control"
+      id="video-game-filters-search-text"
+      type="search"
+      name="searchText"
+      [(ngModel)]="videoGameFilters.searchText"
+      #searchTextControl="ngModel"
+      [minlength]="searchTextMinLength"
+      aria-describedby="video-game-filters-search-text-help video-game-filters-search-text-error"
+      [attr.aria-invalid]="isInvalidAndTouchedOrDirty(searchTextControl)"
+      [class.video-game-filters__control--invalid]="isInvalidAndTouchedOrDirty(searchTextControl)"
+    />
+    <p class="video-game-filters__help" id="video-game-filters-search-text-help">
+      Opcional. Si l'escrius, ha de tenir com a mínim {{ searchTextMinLength }} caràcters.
+    </p>
+    @if (isInvalidAndTouchedOrDirty(searchTextControl)) {
+      <p class="video-game-filters__error" id="video-game-filters-search-text-error" role="alert">
+        El text de cerca ha de tenir com a mínim {{ searchTextMinLength }} caràcters.
+      </p>
+    }
+  </div>
+
+  <div class="video-game-filters__field">
+    <label class="video-game-filters__label" for="video-game-filters-category">Categoria</label>
+    <select
+      class="video-game-filters__control"
+      id="video-game-filters-category"
+      name="category"
+      [(ngModel)]="videoGameFilters.category"
+      required
+    >
+      <option [ngValue]="null">Tria una categoria</option>
+      @for (categoryFilter of videoGameCategoryFilters; track categoryFilter) {
+        <option [ngValue]="categoryFilter">{{ categoryFilter }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="video-game-filters__actions">
+    <button
+      class="video-game-filters__button"
+      type="submit"
+      [disabled]="filterForm.invalid"
+      aria-describedby="video-game-filters-submit-hint"
+    >
+      Aplicar filtres
+    </button>
+    <button
+      class="video-game-filters__button video-game-filters__button--secondary"
+      type="button"
+      (click)="onResetVideoGameFilters(filterForm)"
+    >
+      Restablir filtres
+    </button>
+  </div>
+
+  @if (filterForm.invalid) {
+    <p class="video-game-filters__submit-hint" id="video-game-filters-submit-hint">
+      Per aplicar els filtres, tria una categoria. Si escrius un text, ha de tenir com a mínim
+      {{ searchTextMinLength }} caràcters.
+    </p>
+  }
+</form>

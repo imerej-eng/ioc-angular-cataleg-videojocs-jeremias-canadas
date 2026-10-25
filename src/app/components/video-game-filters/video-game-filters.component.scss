@@ -1,0 +1,78 @@
+.video-game-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #f3f4f6;
+
+  &__field {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 12rem;
+  }
+
+  &__label {
+    font-weight: bold;
+  }
+
+  &__control {
+    padding: 0.4rem 0.6rem;
+    border: 2px solid #6b7280;
+    border-radius: 4px;
+    font-size: 1rem;
+
+    &--invalid {
+      border-color: #dc2626;
+    }
+  }
+
+  &__help {
+    margin: 0;
+    color: #4b5563;
+    font-size: 0.875rem;
+  }
+
+  &__error {
+    margin: 0;
+    color: #b91c1c;
+    font-size: 0.875rem;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  &__submit-hint {
+    width: 100%;
+    margin: 0;
+    color: #4b5563;
+    font-size: 0.875rem;
+  }
+
+  &__button {
+    padding: 0.45rem 1rem;
+    border: 2px solid #1d4ed8;
+    border-radius: 4px;
+    background-color: #1d4ed8;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+
+    &--secondary {
+      background-color: #fff;
+      color: #1d4ed8;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+}
