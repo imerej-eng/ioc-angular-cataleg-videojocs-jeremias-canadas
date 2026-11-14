@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { VideoGameCategory } from '../../models/video-game.model';
+import { VideoGameCategory } from '../../models/video-game-category.model';
 
 @Component({
   imports: [],
@@ -8,6 +8,6 @@ import { VideoGameCategory } from '../../models/video-game.model';
   templateUrl: './video-game-tag.component.html',
 })
 export class VideoGameTagComponent {
-  @Input({ required: true }) category!: VideoGameCategory;
+  @Input({ required: true }) category!: VideoGameCategory | null;
   @Input() isFeatured = false;
 }

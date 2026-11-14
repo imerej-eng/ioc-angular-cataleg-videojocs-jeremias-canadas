@@ -1,5 +1,10 @@
 <span class="video-game-tag" [class.video-game-tag--featured]="isFeatured">
-  {{ category }}
+  @if (category !== null) {
+    {{ category }}
+  } @else {
+    Sense categoria
+  }
+
   @if (isFeatured) {
     · Destacat
   }

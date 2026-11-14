@@ -17,17 +17,29 @@
 
     <section class="app__results">
       <h2 class="app__results-title">Videojocs</h2>
-      <p class="app__counter" role="status">
-        {{ filteredVideoGames.length }} de {{ videoGames.length }} videojocs
+      <p class="app__status" role="status">
+        @switch (videoGameListStatus()) {
+          @case ('loading') {
+            Carregant els videojocs...
+          }
+          @case ('success') {
+            {{ filteredVideoGames.length }} de {{ videoGames().length }} videojocs
+          }
+        }
       </p>
-      @if (hasFilteredVideoGames) {
-        <app-video-game-list
-          [videoGames]="filteredVideoGames"
-          [selectedVideoGameId]="selectedVideoGame?.id"
-          (selected)="onSelectVideoGame($event)"
-        />
-      } @else {
-        <p class="app__no-results">No s'ha trobat cap videojoc amb aquests filtres.</p>
+      @if (videoGameListStatus() === 'error') {
+        <p class="app__error" role="alert">No s'han pogut carregar els videojocs.</p>
+      }
+      @if (videoGameListStatus() === 'success') {
+        @if (hasFilteredVideoGames) {
+          <app-video-game-list
+            [videoGames]="filteredVideoGames"
+            [selectedVideoGameId]="selectedVideoGame?.id"
+            (selected)="onSelectVideoGame($event)"
+          />
+        } @else {
+          <p class="app__no-results">No s'ha trobat cap videojoc amb aquests filtres.</p>
+        }
       }
     </section>
 

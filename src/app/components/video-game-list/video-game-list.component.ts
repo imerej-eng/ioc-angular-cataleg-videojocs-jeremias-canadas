@@ -10,7 +10,7 @@ import { VideoGameCardComponent } from '../video-game-card/video-game-card.compo
 })
 export class VideoGameListComponent {
   @Input({ required: true }) videoGames!: VideoGame[];
-  @Input() selectedVideoGameId: number | undefined = undefined;
+  @Input() selectedVideoGameId: string | undefined = undefined;
   @Output() selected = new EventEmitter<VideoGame>();
 
   onSelectVideoGame(videoGame: VideoGame): void {

@@ -1,4 +1,4 @@
-import { VideoGameCategory } from './video-game.model';
+import { VideoGameCategory } from './video-game-category.model';
 
 export type VideoGameCategoryFilter = VideoGameCategory | 'Totes';
 

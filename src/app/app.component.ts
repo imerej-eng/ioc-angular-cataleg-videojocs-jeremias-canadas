@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { VideoGameDetailComponent } from './components/video-game-detail/video-game-detail.component';
 import { VideoGameFiltersComponent } from './components/video-game-filters/video-game-filters.component';
 import { VideoGameListComponent } from './components/video-game-list/video-game-list.component';
-import { VIDEO_GAMES_MOCK } from './mocks/video-games.mock';
 import { VideoGame } from './models/video-game.model';
 import { AppliedVideoGameFilters } from './models/video-game-filters.model';
+import { VideoGameService } from './services/video-game.service';
 
 @Component({
   imports: [
@@ -18,19 +18,27 @@ import { AppliedVideoGameFilters } from './models/video-game-filters.model';
   styleUrl: './app.component.scss',
   templateUrl: './app.component.html',
 })
-export class App {
+export class App implements OnInit {
+  private readonly videoGameService = inject(VideoGameService);
+  readonly videoGames = this.videoGameService.videoGames;
+  readonly videoGameListStatus = this.videoGameService.videoGameListStatus;
   public appName = 'Catàleg de Videojocs';
-  videoGames: VideoGame[] = VIDEO_GAMES_MOCK;
+
   appliedVideoGameFilters: AppliedVideoGameFilters | undefined = undefined;
   selectedVideoGame: VideoGame | undefined = undefined;
 
+  ngOnInit(): void {
+    this.videoGameService.loadVideoGames();
+  }
+
   get filteredVideoGames(): VideoGame[] {
     const videoGameFilters = this.appliedVideoGameFilters;
+    const loadedVideoGames = this.videoGames();
     if (videoGameFilters === undefined) {
-      return this.videoGames;
+      return loadedVideoGames;
     }
     const searchText = videoGameFilters.searchText.trim().toLocaleLowerCase('ca');
-    return this.videoGames.filter(
+    return loadedVideoGames.filter(
       (videoGame) =>
         (videoGameFilters.category === 'Totes' ||
           videoGame.category === videoGameFilters.category) &&

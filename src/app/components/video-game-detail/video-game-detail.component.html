@@ -1,21 +1,24 @@
 <article class="video-game-detail">
   <h3 class="video-game-detail__title">{{ videoGame.title }}</h3>
-  <app-video-game-tag
-    [category]="videoGame.category"
-    [isFeatured]="videoGame.isFeatured ?? false"
-  />
+  <app-video-game-tag [category]="videoGame.category" [isFeatured]="videoGame.isFeatured" />
   <p class="video-game-detail__description">{{ videoGame.description }}</p>
   <dl class="video-game-detail__data">
     <dt class="video-game-detail__term">Plataforma</dt>
     <dd class="video-game-detail__value">{{ videoGame.platform }}</dd>
     <dt class="video-game-detail__term">Data de llançament</dt>
     <dd class="video-game-detail__value">
-      <time [attr.datetime]="videoGame.releaseDate">
-        {{ videoGame.releaseDate | date: 'longDate' }}
+      <time [attr.datetime]="videoGame.releaseOn">
+        {{ videoGame.releaseOn | date: 'longDate' }}
       </time>
     </dd>
     <dt class="video-game-detail__term">Valoració</dt>
-    <dd class="video-game-detail__value">{{ videoGame.rating | number: '1.1-1' }} / 5</dd>
+    <dd class="video-game-detail__value">
+      @if (videoGame.rating !== null) {
+        {{ videoGame.rating | number: '1.1-1' }} / 5
+      } @else {
+        Encara no en té.
+      }
+    </dd>
   </dl>
   <button class="video-game-detail__button" type="button" (click)="onCloseVideoGameDetail()">
     Tanca el detall
