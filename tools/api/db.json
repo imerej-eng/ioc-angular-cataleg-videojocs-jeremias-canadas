@@ -163,6 +163,17 @@
       "release_date": "2026-11-19",
       "rating": "",
       "is_featured": 0
+    },
+    {
+      "title": "Mario Kart World",
+      "description": "Joc de curses en un món obert on els circuits estan connectats entre si.",
+      "category": "Curses",
+      "platform": "Nintendo Switch 2",
+      "release_date": "2025-06-05",
+      "rating": "4,5",
+      "is_featured": 0,
+      "id": "lWBbqeW_sWs"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

@@ -1,4 +1,4 @@
-import { VideoGame } from '../models/video-game.model';
+import { VideoGame, NewVideoGame } from '../models/video-game.model';
 import { VideoGameCategory } from '../models/video-game-category.model';
 import { ApiVideoGame } from './types/api-video-game.type';
 
@@ -14,6 +14,19 @@ export function adaptApiVideoGame(apiVideoGame: ApiVideoGame): VideoGame {
     releaseOn: apiVideoGame.release_date,
     rating: Number.isFinite(convertedRating) ? convertedRating : null,
     isFeatured: apiVideoGame.is_featured === 1,
+  };
+}
+
+/** Converteix un videojoc nou al format de l'API i s'afegeix com a no destacat. */
+export function adaptNewVideoGameToApi(newVideoGame: NewVideoGame): Omit<ApiVideoGame, 'id'> {
+  return {
+    title: newVideoGame.title,
+    description: newVideoGame.description,
+    category: newVideoGame.category,
+    platform: newVideoGame.platform,
+    release_date: newVideoGame.releaseOn,
+    rating: String(newVideoGame.rating ?? '').replace('.', ','),
+    is_featured: 0,
   };
 }
 

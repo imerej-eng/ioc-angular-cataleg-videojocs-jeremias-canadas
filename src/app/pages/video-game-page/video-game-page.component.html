@@ -1,0 +1,74 @@
+<div class="video-game-page">
+  <app-video-game-filters
+    class="video-game-page__filters"
+    (filtersApplied)="onApplyVideoGameFilters($event)"
+    (filtersReset)="onResetVideoGameFilters()"
+  />
+
+  <section class="video-game-page__results">
+    <h2 class="video-game-page__results-title">Videojocs</h2>
+    <p class="video-game-page__status" role="status">
+      @switch (videoGameListStatus()) {
+        @case ('loading') {
+          Carregant els videojocs...
+        }
+        @case ('success') {
+          Videojocs trobats: {{ videoGames().length }}.
+        }
+      }
+    </p>
+
+    @if (videoGameListStatus() === 'error') {
+      <div class="video-game-page__banner">
+        <p class="video-game-page__banner-text" role="alert">
+          No s'han pogut carregar els videojocs.
+        </p>
+        <button
+          class="video-game-page__retry-button"
+          type="button"
+          (click)="onRetryVideoGameList()"
+        >
+          Reintentar
+        </button>
+      </div>
+    }
+
+    @if (videoGameListStatus() === 'success') {
+      @if (videoGames().length > 0) {
+        <app-video-game-list
+          [videoGames]="videoGames()"
+          [selectedVideoGameId]="selectedVideoGame?.id"
+          (selected)="onSelectVideoGame($event)"
+        />
+      } @else {
+        <p class="video-game-page__no-results">No s'ha trobat cap videojoc amb aquests filtres.</p>
+      }
+    }
+  </section>
+
+  <aside class="video-game-page__detail" aria-live="polite">
+    <h2 class="video-game-page__detail-title">Detall</h2>
+
+    @if (selectedVideoGame) {
+      <app-video-game-detail [videoGame]="selectedVideoGame" (closed)="onCloseVideoGameDetail()" />
+    } @else {
+      <p class="video-game-page__detail-empty">Selecciona un videojoc per veure'n el detall.</p>
+    }
+  </aside>
+
+  <section class="video-game-page__new">
+    <h2 class="video-game-page__new-title">Afegir un videojoc</h2>
+    <p class="video-game-page__created" role="status">
+      @if (lastCreatedVideoGame(); as createdVideoGame) {
+        Videojoc desat. Codi: {{ createdVideoGame.id }}. Títol: "{{ createdVideoGame.title }}".
+      } @else {
+        Encara no s'ha afegit cap videojoc.
+      }
+    </p>
+
+    <app-video-game-form
+      class="video-game-page__form"
+      (videoGameCreated)="onRegisterCreatedVideoGame($event)"
+    />
+  </section>
+</div>

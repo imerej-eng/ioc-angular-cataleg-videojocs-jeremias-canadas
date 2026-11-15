@@ -1,14 +1,15 @@
 # Models i adaptador
 
-Aquest document explica com es transformen els videojocs que envia l'API local (`json-server`) al model intern que fa servir l'aplicació.
+Aquest document explica com es transformen els videojocs que envia l'API local (`json-server`) al model intern que fa servir l'aplicació, i com es preparen els videojocs nous per enviar-los amb POST.
 
 ## Fitxers
 
 - Model de la resposta de l'API: `src/app/adapters/types/api-video-game.type.ts` (`ApiVideoGame`).
 - Tipus del sí/no de l'API: `src/app/adapters/types/api-binary-flag.type.ts` (`ApiBinaryFlag`: 1 = sí, 0 = no).
-- Model intern: `src/app/models/video-game.model.ts` (`VideoGame`).
-- Categoria videojocs del catàleg: `src/app/models/video-game-category.model.ts` (`VideoGameCategory`).
-- Adaptador: `src/app/adapters/video-game.adapter.ts` (funció `adaptApiVideoGame`).
+- Model intern: `src/app/models/video-game.model.ts` (`VideoGame` i `NewVideoGame`).
+- Categoria videojocs del catàleg: `src/app/models/video-game-category.model.ts` (`VideoGameCategory` i la llista `VIDEO_GAME_CATEGORIES`).
+- Criteris de cerca: `src/app/models/video-game-search-criteria.model.ts` (`VideoGameSearchCriteria`).
+- Adaptador: `src/app/adapters/video-game.adapter.ts` (funcions `adaptApiVideoGame` i `adaptNewVideoGameToApi`).
 
 ## Model de l'API i model intern
 
@@ -52,9 +53,30 @@ L'adaptador aplica cinc de les accions demanades:
 
 L'adaptador no inventa dades: un valor que no es pot convertir queda com a `null`, i la plantilla mostra un text com "Sense categoria" o "Encara no en té.". Les dates no es transformen perquè l'API ja les envia en format AAAA-MM-DD.
 
+## Videojoc nou (POST): model intern -> API
+
+El formulari d'alta construeix un `NewVideoGame` (sense `id`). Abans d'enviar-lo, `adaptNewVideoGameToApi` el passa al format de l'API i l'`id` el posa `json-server`.
+
+| Camp intern (`NewVideoGame`) | Camp API | Transformació |
+|---|---|---|
+| `title` | `title` | Es copia (el formulari ja l'ha retallat). |
+| `description` | `description` | Es copia (el formulari ja l'ha retallat). |
+| `category` | `category` | Es copia (sempre és una categoria de la llista). |
+| `platform` | `platform` | Es copia (el formulari ja l'ha retallat). |
+| `releaseOn` | `release_date` | Es reanomena. |
+| `rating` | `rating` | Número a text amb coma decimal (`4.5` passa a `"4,5"`) i si és `null`, es passa `""`. |
+| (no hi és) | `is_featured` | Sempre `0`: no és destacat. |
+
+La resposta del POST torna a passar per `adaptApiVideoGame`: el que s'ha enviat torna normalitzat al mateix valor (per exemple, la valoració `""` torna com a `null`).
+
 ## On s'aplica l'adaptador
 
-`VideoGameService` (`src/app/services/video-game.service.ts`) fa la petició GET i aplica `adaptApiVideoGame` a cada element dins del `pipe`, abans de desar la llista. La interfície rep sempre videojocs ja adaptats.
+`VideoGameService` (`src/app/services/video-game.service.ts`):
+
+- `adaptApiVideoGame` s'aplica a cada element dins del `pipe` del GET, abans de filtrar per criteris i de desar la llista.
+- `adaptNewVideoGameToApi` prepara el cos del POST a `addVideoGame`, i `adaptApiVideoGame` adapta el videojoc creat que retorna l'API.
+
+La interfície rep sempre videojocs ja adaptats.
 
 ## Exemples
 
@@ -64,3 +86,4 @@ L'adaptador no inventa dades: un valor que no es pot convertir queda com a `null
 | 5 | sense `is_featured` | no destacat |
 | 12 | descripció `"  Simulador de vida on crees personatges, construeixes cases i controles les seves activitats del dia a dia."`, categoria `"simulacio"` | descripció `"Simulador de vida on crees personatges, construeixes cases i controles les seves activitats del dia a dia."`, categoria `"Simulació"` |
 | 17 | valoració `""` | valoració `null` |
+| Mario Kart World (POST) | s'envia `"rating": "4,5"`, `"category": "Curses"`, `"platform": "Nintendo Switch 2"` | torna valoració 4.5, categoria `"Curses"`, plataforma `"Nintendo Switch 2"` |

@@ -1,0 +1,210 @@
+<form
+  class="video-game-form"
+  [formGroup]="videoGameForm"
+  (ngSubmit)="onSubmitVideoGame(titleInput)"
+>
+  <div class="video-game-form__field">
+    <label class="video-game-form__label" for="video-game-form-title">Títol</label>
+    <input
+      class="video-game-form__input"
+      id="video-game-form-title"
+      type="text"
+      formControlName="title"
+      name="title"
+      required
+      aria-describedby="video-game-form-title-help video-game-form-title-errors"
+      [attr.aria-invalid]="isTouchedAndInvalid(videoGameForm.controls.title)"
+      #titleInput
+    />
+    <p class="video-game-form__help" id="video-game-form-title-help">
+      Mínim
+      {{ videoGameTitleMinLength }}
+      caràcters sense comptar els espais dels extrems.
+    </p>
+    @if (isTouchedAndInvalid(videoGameForm.controls.title)) {
+      <div class="video-game-form__errors" id="video-game-form-title-errors" role="alert">
+        @if (videoGameForm.controls.title.hasError('required')) {
+          <p class="video-game-form__error">El títol és obligatori.</p>
+        }
+        @if (videoGameForm.controls.title.hasError('notBlank')) {
+          <p class="video-game-form__error">El títol no pot ser només espais.</p>
+        }
+        @if (videoGameForm.controls.title.hasError('trimmedMinLength')) {
+          <p class="video-game-form__error">
+            El títol ha de tenir com a mínim
+            {{ videoGameTitleMinLength }}
+            caràcters.
+          </p>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="video-game-form__field">
+    <label class="video-game-form__label" for="video-game-form-description">Descripció</label>
+    <textarea
+      class="video-game-form__input"
+      id="video-game-form-description"
+      rows="4"
+      formControlName="description"
+      name="description"
+      required
+      aria-describedby="video-game-form-description-help video-game-form-description-errors"
+      [attr.aria-invalid]="isTouchedAndInvalid(videoGameForm.controls.description)"
+    ></textarea>
+    <p class="video-game-form__help" id="video-game-form-description-help">
+      Màxim
+      {{ videoGameDescriptionMaxLength }}
+      caràcters.
+    </p>
+    @if (isTouchedAndInvalid(videoGameForm.controls.description)) {
+      <div class="video-game-form__errors" id="video-game-form-description-errors" role="alert">
+        @if (videoGameForm.controls.description.hasError('required')) {
+          <p class="video-game-form__error">La descripció és obligatòria.</p>
+        }
+        @if (videoGameForm.controls.description.hasError('notBlank')) {
+          <p class="video-game-form__error">La descripció no pot ser només espais.</p>
+        }
+        @if (videoGameForm.controls.description.hasError('maxlength')) {
+          <p class="video-game-form__error">
+            La descripció pot tenir com a màxim
+            {{ videoGameDescriptionMaxLength }}
+            caràcters.
+          </p>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="video-game-form__field">
+    <label class="video-game-form__label" for="video-game-form-category">Categoria</label>
+    <select
+      class="video-game-form__input"
+      id="video-game-form-category"
+      formControlName="category"
+      name="category"
+      required
+      aria-describedby="video-game-form-category-errors"
+      [attr.aria-invalid]="isTouchedAndInvalid(videoGameForm.controls.category)"
+    >
+      <option value="">Tria una categoria</option>
+      @for (videoGameCategory of videoGameCategories; track videoGameCategory) {
+        <option [value]="videoGameCategory">{{ videoGameCategory }}</option>
+      }
+    </select>
+    @if (isTouchedAndInvalid(videoGameForm.controls.category)) {
+      <div class="video-game-form__errors" id="video-game-form-category-errors" role="alert">
+        @if (videoGameForm.controls.category.hasError('required')) {
+          <p class="video-game-form__error">Tria una categoria.</p>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="video-game-form__field">
+    <label class="video-game-form__label" for="video-game-form-platform">Plataforma</label>
+    <input
+      class="video-game-form__input"
+      id="video-game-form-platform"
+      type="text"
+      formControlName="platform"
+      name="platform"
+      required
+      aria-describedby="video-game-form-platform-help video-game-form-platform-errors"
+      [attr.aria-invalid]="isTouchedAndInvalid(videoGameForm.controls.platform)"
+    />
+    <p class="video-game-form__help" id="video-game-form-platform-help">
+      Mínim
+      {{ videoGamePlatformMinLength }}
+      caràcters sense comptar els espais dels extrems.
+    </p>
+    @if (isTouchedAndInvalid(videoGameForm.controls.platform)) {
+      <div class="video-game-form__errors" id="video-game-form-platform-errors" role="alert">
+        @if (videoGameForm.controls.platform.hasError('required')) {
+          <p class="video-game-form__error">La plataforma és obligatòria.</p>
+        }
+        @if (videoGameForm.controls.platform.hasError('notBlank')) {
+          <p class="video-game-form__error">La plataforma no pot ser només espais.</p>
+        }
+        @if (videoGameForm.controls.platform.hasError('trimmedMinLength')) {
+          <p class="video-game-form__error">
+            La plataforma ha de tenir com a mínim
+            {{ videoGamePlatformMinLength }}
+            caràcters.
+          </p>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="video-game-form__field">
+    <label class="video-game-form__label" for="video-game-form-release-on"
+      >Data de llançament</label
+    >
+    <input
+      class="video-game-form__input"
+      id="video-game-form-release-on"
+      type="date"
+      formControlName="releaseOn"
+      name="releaseOn"
+      required
+      aria-describedby="video-game-form-release-on-errors"
+      [attr.aria-invalid]="isTouchedAndInvalid(videoGameForm.controls.releaseOn)"
+    />
+    @if (isTouchedAndInvalid(videoGameForm.controls.releaseOn)) {
+      <div class="video-game-form__errors" id="video-game-form-release-on-errors" role="alert">
+        @if (videoGameForm.controls.releaseOn.hasError('required')) {
+          <p class="video-game-form__error">La data de llançament és obligatòria.</p>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="video-game-form__field">
+    <label class="video-game-form__label" for="video-game-form-rating">Valoració (sobre 5)</label>
+    <input
+      class="video-game-form__input"
+      id="video-game-form-rating"
+      type="number"
+      formControlName="rating"
+      name="rating"
+      aria-describedby="video-game-form-rating-help video-game-form-rating-errors"
+      [attr.aria-invalid]="isTouchedAndInvalid(videoGameForm.controls.rating)"
+    />
+    <p class="video-game-form__help" id="video-game-form-rating-help">
+      Opcional. De
+      {{ videoGameRatingMin }}
+      a
+      {{ videoGameRatingMax }}; pot tenir decimals.
+    </p>
+    @if (isTouchedAndInvalid(videoGameForm.controls.rating)) {
+      <div class="video-game-form__errors" id="video-game-form-rating-errors" role="alert">
+        @if (videoGameForm.controls.rating.hasError('min')) {
+          <p class="video-game-form__error">
+            La valoració no pot ser inferior a
+            {{ videoGameRatingMin }}.
+          </p>
+        }
+        @if (videoGameForm.controls.rating.hasError('max')) {
+          <p class="video-game-form__error">
+            La valoració no pot ser superior a
+            {{ videoGameRatingMax }}.
+          </p>
+        }
+      </div>
+    }
+  </div>
+
+  <button class="video-game-form__submit" type="submit">Afegir el videojoc</button>
+
+  <p class="video-game-form__save-status" role="status">
+    @if (videoGameSaveStatus() === 'loading') {
+      Desant el videojoc...
+    }
+  </p>
+  @if (videoGameSaveStatus() === 'error') {
+    <p class="video-game-form__save-error" role="alert">
+      No s'ha pogut desar el videojoc. Torna-ho a provar.
+    </p>
+  }
+</form>
