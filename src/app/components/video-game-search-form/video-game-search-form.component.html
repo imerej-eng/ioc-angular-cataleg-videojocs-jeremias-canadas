@@ -1,0 +1,115 @@
+<form
+  class="video-game-search-form"
+  [formGroup]="videoGameSearchForm"
+  (ngSubmit)="onSubmitVideoGameSearch()"
+>
+  <div class="video-game-search-form__field">
+    <label class="video-game-search-form__label" for="video-game-search-form-search-text">
+      Text de cerca
+    </label>
+    <input
+      class="video-game-search-form__input"
+      id="video-game-search-form-search-text"
+      type="search"
+      formControlName="searchText"
+      name="searchText"
+      aria-describedby="video-game-search-form-search-text-help video-game-search-form-search-text-status video-game-search-form-search-text-errors"
+      [attr.aria-invalid]="isTouchedAndInvalid(videoGameSearchForm.controls.searchText)"
+    />
+    <p class="video-game-search-form__help" id="video-game-search-form-search-text-help">
+      Opcional. Es busca al títol i a la descripció. Si l'escrius, ha de tenir com a mínim
+      {{ videoGameSearchTextMinLength }}
+      caràcters sense comptar els espais dels extrems.
+    </p>
+    <p
+      class="video-game-search-form__status"
+      id="video-game-search-form-search-text-status"
+      role="status"
+    >
+      @if (videoGameSearchForm.controls.searchText.pending) {
+        <span class="video-game-search-form__spinner" aria-hidden="true"></span>
+        Comprovant si hi ha resultats...
+      }
+    </p>
+    @if (isTouchedAndInvalid(videoGameSearchForm.controls.searchText)) {
+      <div
+        class="video-game-search-form__errors"
+        id="video-game-search-form-search-text-errors"
+        role="alert"
+      >
+        @if (videoGameSearchForm.controls.searchText.hasError('trimmedMinLength')) {
+          <p class="video-game-search-form__error">
+            El text de cerca ha de tenir com a mínim
+            {{ videoGameSearchTextMinLength }}
+            caràcters.
+          </p>
+        }
+        @if (videoGameSearchForm.controls.searchText.hasError('matchingVideoGameExists')) {
+          <p class="video-game-search-form__error">Cap videojoc coincideix amb aquest text.</p>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="video-game-search-form__field">
+    <label class="video-game-search-form__label" for="video-game-search-form-category">
+      Categoria
+    </label>
+    <select
+      class="video-game-search-form__input"
+      id="video-game-search-form-category"
+      formControlName="category"
+      name="category"
+    >
+      <option value="">Totes les categories</option>
+      @for (videoGameCategory of videoGameCategories; track videoGameCategory) {
+        <option [value]="videoGameCategory">{{ videoGameCategory }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="video-game-search-form__actions">
+    <button class="video-game-search-form__button" type="submit">Cercar</button>
+    <button
+      class="video-game-search-form__button video-game-search-form__button--secondary"
+      type="button"
+      (click)="onClearVideoGameSearch()"
+    >
+      Netejar
+    </button>
+  </div>
+
+  <div class="video-game-search-form__history">
+    <h2 class="video-game-search-form__history-title">Cerques recents</h2>
+    @if (hasSavedVideoGameSearches) {
+      <ul class="video-game-search-form__history-list">
+        @for (savedVideoGameSearch of savedVideoGameSearches; track savedVideoGameSearch.savedAt) {
+          <li class="video-game-search-form__history-item">
+            <button
+              class="video-game-search-form__history-button"
+              type="button"
+              (click)="onRecoverVideoGameSearch(savedVideoGameSearch)"
+            >
+              "{{ savedVideoGameSearch.searchText }}" ·
+              {{
+                savedVideoGameSearch.category === ''
+                  ? 'Totes les categories'
+                  : savedVideoGameSearch.category
+              }}
+            </button>
+          </li>
+        }
+      </ul>
+    } @else {
+      <p class="video-game-search-form__history-empty">Encara no hi ha cerques desades.</p>
+    }
+    <button
+      class="video-game-search-form__button video-game-search-form__button--secondary"
+      type="button"
+      [disabled]="!hasSavedVideoGameSearches"
+      (click)="onClearSavedVideoGameSearches()"
+    >
+      Esborrar l'historial
+    </button>
+  </div>
+</form>

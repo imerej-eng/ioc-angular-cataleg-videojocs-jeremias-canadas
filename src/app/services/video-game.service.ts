@@ -72,7 +72,7 @@ export class VideoGameService {
       );
   }
 
-  private getVideoGamesByCriteria(
+  getVideoGamesByCriteria(
     videoGameSearchCriteria: VideoGameSearchCriteria,
   ): Observable<VideoGame[]> {
     return this.http.get<ApiVideoGame[]>(this.videoGamesUrl).pipe(

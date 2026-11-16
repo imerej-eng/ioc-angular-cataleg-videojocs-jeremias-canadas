@@ -1,8 +1,9 @@
 <div class="video-game-page">
-  <app-video-game-filters
-    class="video-game-page__filters"
-    (filtersApplied)="onApplyVideoGameFilters($event)"
-    (filtersReset)="onResetVideoGameFilters()"
+  <app-video-game-search-form
+    class="video-game-page__search-form"
+    [savedVideoGameSearches]="savedVideoGameSearches()"
+    (videoGameSearchCriteriaSubmitted)="onSearchVideoGames($event)"
+    (savedVideoGameSearchesCleared)="onClearSavedVideoGameSearches()"
   />
 
   <section class="video-game-page__results">
@@ -41,7 +42,7 @@
           (selected)="onSelectVideoGame($event)"
         />
       } @else {
-        <p class="video-game-page__no-results">No s'ha trobat cap videojoc amb aquests filtres.</p>
+        <p class="video-game-page__no-results">Cap videojoc coincideix amb la cerca.</p>
       }
     }
   </section>
