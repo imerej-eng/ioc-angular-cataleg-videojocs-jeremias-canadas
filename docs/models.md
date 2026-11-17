@@ -9,7 +9,10 @@ Aquest document explica com es transformen els videojocs que envia l'API local (
 - Model intern: `src/app/models/video-game.model.ts` (`VideoGame` i `NewVideoGame`).
 - Categoria videojocs del catàleg: `src/app/models/video-game-category.model.ts` (`VideoGameCategory` i la llista `VIDEO_GAME_CATEGORIES`).
 - Criteris de cerca: `src/app/models/video-game-search-criteria.model.ts` (`VideoGameSearchCriteria`).
+- Cerca desada a l'historial: `src/app/models/saved-video-game-search.model.ts` (`SavedVideoGameSearch`: els criteris més l'instant `savedAt`; vegeu [formularis.md](formularis.md)).
+- Estat d'una petició: `src/app/models/request-status.model.ts` (`RequestStatus`; detall a [serveis.md](serveis.md)).
 - Adaptador: `src/app/adapters/video-game.adapter.ts` (funcions `adaptApiVideoGame` i `adaptNewVideoGameToApi`).
+- Test de l'adaptador: `src/app/adapters/video-game.adapter.spec.ts` (una comprovació per cada acció de normalització).
 
 ## Model de l'API i model intern
 
